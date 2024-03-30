@@ -2,12 +2,19 @@ import clsx from 'clsx';
 import { CalendarDays, CircleAlert, Hand, Users } from 'lucide-react';
 import moment from 'moment';
 import * as React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import Button from '@/components/shared/Button';
 import Card from '@/components/shared/Card';
 import Typography from '@/components/shared/Typography';
 
 import BaseLayout from '@/layouts/Base';
+import CreateAttendanceModal from '@/pages/home/components/shared/CreateAttendanceModal';
+import useHomePageStore from '@/pages/home/providers/store/useHomePageStore';
+
+type CreateAttendanceRequestType = {
+    user_id: string;
+};
 
 const HomePage: React.FC = () => {
     //#region  //*=========== Time ===========
@@ -22,6 +29,22 @@ const HomePage: React.FC = () => {
         };
     }, []);
     //#endregion  //*======== Time ===========
+
+    //#region  //*=========== Store ===========
+    const { setIsCreateModalOpen } = useHomePageStore();
+    //#endregion  //*======== Store ===========
+
+    //#region  //*=========== Form ===========
+    const method = useForm<CreateAttendanceRequestType>({
+        mode: 'onTouched',
+    });
+    const { handleSubmit } = method;
+
+    const onSubmit = async (data: CreateAttendanceRequestType) => {
+        // eslint-disable-next-line no-console
+        console.log(data);
+    };
+    //#endregion  //*======== Form ===========
 
     return (
         <BaseLayout pageTitle='Home'>
@@ -66,9 +89,19 @@ const HomePage: React.FC = () => {
                                 You haven't submit attendance today.
                             </Typography>
                         </div>
-                        <Button>Submit Attendance</Button>
+                        <Button onClick={() => setIsCreateModalOpen(true)}>
+                            Submit Attendance
+                        </Button>
                     </div>
                 </Card>
+                <FormProvider {...method}>
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className='flex flex-col space-y-3'
+                    >
+                        <CreateAttendanceModal />
+                    </form>
+                </FormProvider>
             </section>
         </BaseLayout>
     );
