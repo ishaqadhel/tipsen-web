@@ -20,6 +20,7 @@ function App() {
                 >
                     Learn React
                 </a>
+                <p className='text-red-500'>Hello</p>
             </header>
         </div>
     );
