@@ -8,12 +8,14 @@ type Props = {
     pageTitle?: string;
     children: React.ReactNode;
     withoutPaddingTop?: boolean;
+    withoutNavBarAndFooter?: boolean;
 };
 
 const BaseLayout: React.FC<Props> = ({
     pageTitle,
     children,
     withoutPaddingTop,
+    withoutNavBarAndFooter,
 }) => {
     React.useEffect(() => {
         let title = 'Tipsen App';
@@ -23,11 +25,11 @@ const BaseLayout: React.FC<Props> = ({
 
     return (
         <main className='bg-white dark:bg-dark'>
-            <NavigationBar />
+            {!withoutNavBarAndFooter && <NavigationBar />}
             <div className={clsx(!withoutPaddingTop && 'pt-20')}>
                 {children}
             </div>
-            <Footer />
+            {!withoutNavBarAndFooter && <Footer />}
         </main>
     );
 };
