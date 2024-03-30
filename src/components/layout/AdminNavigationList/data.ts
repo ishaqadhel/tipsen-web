@@ -5,7 +5,7 @@ import { PageListType } from '@/components/layout/AdminNavigationList/type';
 export const pageList: PageListType[] = [
     {
         name: 'Dashboard',
-        href: '/admin',
+        href: '/admin/dashboard',
         icon: LayoutDashboard,
     },
     {

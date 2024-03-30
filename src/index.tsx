@@ -4,7 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import '@/index.css';
 
-import AdminHomePage from '@/pages/admin/home';
+import AdminDashboardPage from '@/pages/admin/dashboard';
+import AdminEmployeeManagementPage from '@/pages/admin/employee-management/home';
 import ErrorPage from '@/pages/error';
 import HomePage from '@/pages/home';
 import LoginPage from '@/pages/login';
@@ -22,8 +23,13 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
     {
-        path: '/admin',
-        element: <AdminHomePage />,
+        path: '/admin/dashboard',
+        element: <AdminDashboardPage />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/admin/employee-management',
+        element: <AdminEmployeeManagementPage />,
         errorElement: <ErrorPage />,
     },
 ]);

@@ -11,7 +11,10 @@ const IconButtonVariant = [
     'ghost',
     'light',
     'dark',
+    'success',
 ] as const;
+
+const IconButtonSize = ['xs', 'sm', 'base', 'md', 'lg'] as const;
 
 type IconButtonProps = {
     isLoading?: boolean;
@@ -21,6 +24,7 @@ type IconButtonProps = {
     classNames?: {
         icon?: string;
     };
+    size?: (typeof IconButtonSize)[number];
 } & React.ComponentPropsWithRef<'button'>;
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
@@ -31,6 +35,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
             isLoading,
             variant = 'primary',
             isDarkBg = false,
+            size = 'base',
             icon: Icon,
             classNames,
             ...rest
@@ -50,6 +55,25 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
                     'shadow-sm',
                     'transition-colors duration-75',
                     'min-h-[28px] min-w-[28px] p-1 md:min-h-[34px] md:min-w-[34px] md:p-2',
+                    [
+                        size === 'lg' && [
+                            'min-h-[3.25rem] min-w-[3.25rem] md:min-h-[3.5rem] md:min-w-[3.5rem]',
+                            'text-base',
+                        ],
+                        size === 'md' && [
+                            'min-h-[2.75rem] min-w-[2.75rem] md:min-h-[3rem] md:min-w-[3rem]',
+                            'text-base',
+                        ],
+                        size === 'base' && [
+                            'min-h-[2.25rem] min-w-[2.25rem] md:min-h-[2.5rem] md:min-w-[2.5rem]',
+                            'text-sm md:text-base',
+                        ],
+                        size === 'sm' && [
+                            'min-h-[1.75rem] min-w-[1.75rem] md:min-h-[2rem] md:min-w-[2rem]',
+                            'text-xs md:text-sm',
+                        ],
+                        size === 'xs' && ['p-1', 'text-xs md:text-sm'],
+                    ],
                     //#region  //*=========== Variants ===========
                     [
                         variant === 'primary' && [
@@ -83,6 +107,14 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
                             'bg-gray-900 text-white',
                             'border border-gray-600',
                             'hover:bg-gray-800 active:bg-gray-700 disabled:bg-gray-700',
+                        ],
+                        variant === 'success' && [
+                            'bg-green-600 text-white',
+                            'border border-green-600',
+                            'hover:bg-green-700 hover:text-white',
+                            'active:bg-green-800',
+                            'disabled:bg-green-800',
+                            'focus-visible:ring-green-500',
                         ],
                     ],
                     //#endregion  //*======== Variants ===========

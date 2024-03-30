@@ -5,9 +5,9 @@ import StatisticCardWithPicture from '@/components/shared/StatisticCardWithPictu
 
 import AdminLayout from '@/layouts/Admin';
 
-const AdminHomePage: React.FC = () => {
+const AdminDashboardPage: React.FC = () => {
     return (
-        <AdminLayout pageTitle='Home'>
+        <AdminLayout pageTitle='Admin Dashboard'>
             <section className='layout'>
                 <Card title='User Recently Attendance' withoutAnimation>
                     <div className='space-y-5'>
@@ -38,4 +38,4 @@ const AdminHomePage: React.FC = () => {
     );
 };
 
-export default AdminHomePage;
+export default AdminDashboardPage;
