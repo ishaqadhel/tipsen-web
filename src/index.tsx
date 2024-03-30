@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import '@/index.css';
 
+import AdminHomePage from '@/pages/admin/home';
 import ErrorPage from '@/pages/error';
 import HomePage from '@/pages/home';
 import LoginPage from '@/pages/login';
@@ -18,6 +19,11 @@ const router = createBrowserRouter([
     {
         path: '/login',
         element: <LoginPage />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/admin',
+        element: <AdminHomePage />,
         errorElement: <ErrorPage />,
     },
 ]);
