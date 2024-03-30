@@ -20,7 +20,7 @@ const CreateAttendanceModal: React.FC = () => {
         >
             <Modal.Section>
                 <div className='p-4 space-y-4'>
-                    <Input id='notes' label='Notes' />
+                    <Input id='notes' label='Notes (Optional)' />
                     <InputFile
                         id='file'
                         label='Proof of Work'
