@@ -101,10 +101,12 @@ const Typography: TypographyComponent = React.forwardRef(
                     //#endregion  //*======== Variants ===========
                     //#region  //*=========== Color ===========
                     [
-                        color === 'primary' && ['text-[#000000]'],
+                        color === 'primary' && [
+                            'text-[#000000] dark:text-[#FFFFFF]',
+                        ],
                         color === 'secondary' && ['text-[#676767]'],
                         color === 'tertiary' && ['text-[#A6A6A6]'],
-                        color === 'white' && ['text-white'],
+                        color === 'white' && ['text-white dark:text-black'],
                         color === 'danger' && ['text-red-500'],
                     ],
                     //#endregion  //*======== Color ===========
