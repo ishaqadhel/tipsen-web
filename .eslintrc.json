@@ -2,8 +2,10 @@
     "env": {
         "browser": true,
         "es2021": true,
-        "jest": true
+        "jest": true,
+        "node": true
     },
+    "ignorePatterns": ["craco.config.js"],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
