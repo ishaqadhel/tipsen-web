@@ -20,7 +20,7 @@ function App() {
                 >
                     Learn React
                 </a>
-                <p className='text-red-500'>Hello</p>
+                <p className='text-red-500'>Helloss</p>
             </header>
         </div>
     );
