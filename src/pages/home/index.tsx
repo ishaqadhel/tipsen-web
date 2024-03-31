@@ -1,11 +1,12 @@
+import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { CalendarDays, CircleAlert, Hand, Users } from 'lucide-react';
+import { CalendarDays, Check, CircleAlert, Hand, Users } from 'lucide-react';
 import moment from 'moment';
 import * as React from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
 
 import Button from '@/components/shared/Button';
 import Card from '@/components/shared/Card';
+import SpinnerLoading from '@/components/shared/SpinnerLoading';
 import Typography from '@/components/shared/Typography';
 import withAuth from '@/components/shared/withAuth';
 
@@ -13,10 +14,10 @@ import BaseLayout from '@/layouts/Base';
 import CreateAttendanceModal from '@/pages/home/components/shared/CreateAttendanceModal';
 import useHomePageStore from '@/pages/home/providers/store/useHomePageStore';
 import useAuthorizationStore from '@/providers/store/useAuthorizationStore';
+import api from '@/services/axios';
 
-type CreateAttendanceRequestType = {
-    user_id: string;
-};
+import { Attendance } from '@/types/apis/attendance/type';
+import { ApiReturnType } from '@/types/apis/common/type';
 
 const HomePage: React.FC = () => {
     //#region  //*=========== Time ===========
@@ -37,17 +38,19 @@ const HomePage: React.FC = () => {
     const { user } = useAuthorizationStore();
     //#endregion  //*======== Store ===========
 
-    //#region  //*=========== Form ===========
-    const method = useForm<CreateAttendanceRequestType>({
-        mode: 'onTouched',
+    //#region  //*=========== Query Today Attendance ===========
+    const url = `/attendance/user/${user?.id}/today`;
+    const {
+        data: queryData,
+        isLoading: isLoadingData,
+        refetch,
+        isRefetching,
+    } = useQuery<ApiReturnType<Attendance>, Error>([url], {
+        keepPreviousData: true,
+        queryFn: async () => api.get(url).then((res) => res.data),
     });
-    const { handleSubmit } = method;
-
-    const onSubmit = async (data: CreateAttendanceRequestType) => {
-        // eslint-disable-next-line no-console
-        console.log(data);
-    };
-    //#endregion  //*======== Form ===========
+    const datas = queryData?.data;
+    //#endregion  //*======== Query Today Attendance ===========
 
     return (
         <BaseLayout pageTitle='Home'>
@@ -82,27 +85,36 @@ const HomePage: React.FC = () => {
                         </div>
                     </Card>
                 </div>
-                <Card className='w-full'>
-                    <div className='flex items-center justify-between'>
-                        <div className='flex items-center'>
-                            <CircleAlert className='w-6 h-6 mr-2 text-black dark:text-white' />
-                            <Typography variant='s1'>
-                                You haven't submit attendance today.
-                            </Typography>
+                {isLoadingData || isRefetching ? (
+                    <SpinnerLoading />
+                ) : datas ? (
+                    <Card className='w-full'>
+                        <div className='flex items-center justify-between'>
+                            <div className='flex items-center'>
+                                <Check className='w-6 h-6 mr-2 text-black dark:text-white' />
+                                <Typography variant='s1'>
+                                    Already submit attendance today.
+                                </Typography>
+                            </div>
                         </div>
-                        <Button onClick={() => setIsCreateModalOpen(true)}>
-                            Submit Attendance
-                        </Button>
-                    </div>
-                </Card>
-                <FormProvider {...method}>
-                    <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        className='flex flex-col space-y-3'
-                    >
-                        <CreateAttendanceModal />
-                    </form>
-                </FormProvider>
+                    </Card>
+                ) : (
+                    <Card className='w-full'>
+                        <div className='flex items-center justify-between'>
+                            <div className='flex items-center'>
+                                <CircleAlert className='w-6 h-6 mr-2 text-black dark:text-white' />
+                                <Typography variant='s1'>
+                                    You haven't submit attendance today.
+                                </Typography>
+                            </div>
+                            <Button onClick={() => setIsCreateModalOpen(true)}>
+                                Submit Attendance
+                            </Button>
+                        </div>
+                    </Card>
+                )}
+
+                <CreateAttendanceModal refetch={refetch} />
             </section>
         </BaseLayout>
     );
