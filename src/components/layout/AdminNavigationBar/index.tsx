@@ -5,6 +5,7 @@ import { Tooltip } from 'react-tooltip';
 import Typography from '@/components/shared/Typography';
 
 import useAdminLayoutStore from '@/providers/store/useAdminLayoutStore';
+import useAuthorizationStore from '@/providers/store/useAuthorizationStore';
 import { mergeTailwindClassName } from '@/services/mergeTailwindClassName';
 
 type Props = {
@@ -21,7 +22,13 @@ const AdminNavigationBar: React.FC<Props> = ({
     //#region  //*=========== Store ===========
     const { isMobileSideBarOpen, setIsMobileSideBarOpen } =
         useAdminLayoutStore();
+    const { user, logout } = useAuthorizationStore();
     //#endregion  //*======== Store ===========
+
+    const onLogout = () => {
+        logout();
+        localStorage.removeItem('token');
+    };
 
     return (
         <header
@@ -73,14 +80,14 @@ const AdminNavigationBar: React.FC<Props> = ({
                 >
                     <div className='border rounded-md'>
                         <div className='p-4'>
-                            <Typography variant='h6'>User</Typography>
-                            <Typography variant='b3'>
-                                Fullstack Developer
-                            </Typography>
+                            <Typography variant='h6'>{user?.name}</Typography>
                         </div>
                         <hr className='w-full border' />
                         <div className='p-4 space-y-2'>
-                            <div className='flex items-center space-x-4'>
+                            <div
+                                className='flex items-center space-x-4 hover:cursor-pointer'
+                                onClick={() => onLogout()}
+                            >
                                 <Power className='w-4' />
                                 <Typography variant='b3'>Logout</Typography>
                             </div>

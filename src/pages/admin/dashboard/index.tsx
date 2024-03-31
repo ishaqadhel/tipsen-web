@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import Card from '@/components/shared/Card';
 import StatisticCardWithPicture from '@/components/shared/StatisticCardWithPicture';
+import withAuth from '@/components/shared/withAuth';
 
 import AdminLayout from '@/layouts/Admin';
 
@@ -38,4 +39,4 @@ const AdminDashboardPage: React.FC = () => {
     );
 };
 
-export default AdminDashboardPage;
+export default withAuth(AdminDashboardPage, 'all');
