@@ -12,6 +12,7 @@ const useEmployeeManagementHomePageStore =
         selectedUser: null,
         isCreateModalOpen: false,
         isEditModalOpen: false,
+        isAttendanceModalOpen: false,
         setIsSortModalOpen: (value: boolean) =>
             set(() => ({
                 isSortModalOpen: value,
@@ -35,6 +36,10 @@ const useEmployeeManagementHomePageStore =
         setIsEditModalOpen: (value: boolean) =>
             set(() => ({
                 isEditModalOpen: value,
+            })),
+        setIsAttendanceModalOpen: (value: boolean) =>
+            set(() => ({
+                isAttendanceModalOpen: value,
             })),
     }));
 

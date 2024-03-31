@@ -13,4 +13,6 @@ export type EmployeeManagementHomePageStore = {
     setIsCreateModalOpen: (value: boolean) => void;
     isEditModalOpen: boolean;
     setIsEditModalOpen: (value: boolean) => void;
+    setIsAttendanceModalOpen: (value: boolean) => void;
+    isAttendanceModalOpen: boolean;
 };

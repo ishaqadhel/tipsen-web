@@ -8,6 +8,7 @@ import SpinnerLoading from '@/components/shared/SpinnerLoading';
 import withAuth from '@/components/shared/withAuth';
 
 import AdminLayout from '@/layouts/Admin';
+import UserAttendanceModal from '@/pages/admin/employee-management/home/components/shared/UserAttendanceModal';
 import UserCreateModal from '@/pages/admin/employee-management/home/components/shared/UserCreateModal';
 import UserEditModal from '@/pages/admin/employee-management/home/components/shared/UserEditModal';
 import UserInformationCard from '@/pages/admin/employee-management/home/components/shared/UserInformationCard';
@@ -98,6 +99,7 @@ const AdminEmployeeManagementPage: React.FC = () => {
             </div>
             <UserCreateModal refetch={refetch} />
             <UserEditModal refetch={refetch} />
+            <UserAttendanceModal />
         </AdminLayout>
     );
 };

@@ -3,7 +3,7 @@ import {
     RefetchOptions,
     RefetchQueryFilters,
 } from '@tanstack/react-query';
-import { MoreVertical, Pen } from 'lucide-react';
+import { Eye, MoreVertical, Pen } from 'lucide-react';
 import * as React from 'react';
 import { Tooltip } from 'react-tooltip';
 
@@ -23,7 +23,7 @@ type Props = {
 
 const UserInformationCard: React.FC<Props> = ({ user }) => {
     //#region  //*=========== Store ===========
-    const { setIsEditModalOpen, setSelectedUser } =
+    const { setIsEditModalOpen, setSelectedUser, setIsAttendanceModalOpen } =
         useEmployeeManagementHomePageStore();
     //#endregion  //*======== Store ===========
     return (
@@ -42,6 +42,18 @@ const UserInformationCard: React.FC<Props> = ({ user }) => {
                 clickable={true}
                 className='z-[600]'
             >
+                <div className='p-4 space-y-2'>
+                    <div
+                        className='flex items-center space-x-4 cursor-pointer'
+                        onClick={() => {
+                            setSelectedUser(user);
+                            setIsAttendanceModalOpen(true);
+                        }}
+                    >
+                        <Eye className='w-4' />
+                        <Typography variant='b3'>Attendance</Typography>
+                    </div>
+                </div>
                 <div className='p-4 space-y-2'>
                     <div
                         className='flex items-center space-x-4 cursor-pointer'
