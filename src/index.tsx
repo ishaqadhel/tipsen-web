@@ -4,11 +4,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import '@/index.css';
 
+import DismissableToast from '@/components/shared/DismissableToast';
+
 import AdminDashboardPage from '@/pages/admin/dashboard';
 import AdminEmployeeManagementPage from '@/pages/admin/employee-management/home';
 import ErrorPage from '@/pages/error';
 import HomePage from '@/pages/home';
 import LoginPage from '@/pages/login';
+import QueryProviderContext from '@/providers/context/QueryProvider';
 import reportWebVitals from '@/reportWebVitals';
 
 const router = createBrowserRouter([
@@ -40,7 +43,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <QueryProviderContext>
+            <DismissableToast />
+            <RouterProvider router={router} />
+        </QueryProviderContext>
     </React.StrictMode>,
 );
 

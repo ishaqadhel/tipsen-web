@@ -1,29 +1,82 @@
+import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+
+import useMutationToast from '@/hooks/useMutationToast';
 
 import Button from '@/components/shared/Button';
 import Card from '@/components/shared/Card';
 import Input from '@/components/shared/Input';
 import Typography from '@/components/shared/Typography';
+import withAuth from '@/components/shared/withAuth';
 
 import BaseLayout from '@/layouts/Base';
+import useAuthorizationStore from '@/providers/store/useAuthorizationStore';
+import api from '@/services/axios';
+
+import { User } from '@/types/apis/authentication/type';
+import { ApiReturnType } from '@/types/apis/common/type';
 
 type LoginRequestType = {
-    code: string;
+    email: string;
     password: string;
 };
 
 const LoginPage: React.FC = () => {
+    //#region  //*=========== Store ===========
+    const { login } = useAuthorizationStore();
+    //#endregion  //*======== Store ===========
+
+    //#region  //*=========== Nav ===========
+    const navigate = useNavigate();
+    //#endregion  //*======== Nav ===========
+
     //#region  //*=========== Form ===========
     const method = useForm<LoginRequestType>({
         mode: 'onTouched',
     });
     const { handleSubmit } = method;
 
+    const { mutateAsync: postLogin, isLoading } = useMutationToast<
+        void,
+        LoginRequestType
+    >(
+        useMutation((data) => {
+            const data_send = {
+                email: data.email,
+                password: data.password,
+            };
+            return api
+                .post('/authentication/login', data_send)
+                .then(async (res) => {
+                    const token = res.data.data;
+                    localStorage.setItem('token', token);
+
+                    const user =
+                        await api.get<ApiReturnType<User>>(
+                            '/authentication/me',
+                        );
+                    login({
+                        ...user.data.data,
+                    });
+                    if (user.data.data.is_admin) {
+                        navigate('/admin/dashboard');
+                    } else {
+                        navigate('/');
+                    }
+                });
+        }),
+        {
+            success: 'Berhasil masuk',
+        },
+    );
+
     const onSubmit = async (data: LoginRequestType) => {
         // eslint-disable-next-line no-console
         console.log(data);
+        await postLogin(data);
     };
     //#endregion  //*======== Form ===========
     return (
@@ -47,10 +100,10 @@ const LoginPage: React.FC = () => {
                                     Login to Tipsen App
                                 </Typography>
                                 <Input
-                                    id='code'
-                                    label='Employee Code'
+                                    id='email'
+                                    label='Employee Email'
                                     validation={{
-                                        required: 'Employee code is required',
+                                        required: 'Employee email is required',
                                     }}
                                 />
                                 <Input
@@ -65,6 +118,8 @@ const LoginPage: React.FC = () => {
                                     <Button
                                         variant='primary'
                                         className='flex items-center justify-center w-full'
+                                        type='submit'
+                                        isLoading={isLoading}
                                     >
                                         Submit
                                     </Button>
@@ -78,4 +133,4 @@ const LoginPage: React.FC = () => {
     );
 };
 
-export default LoginPage;
+export default withAuth(LoginPage, 'auth');

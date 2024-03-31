@@ -13,9 +13,16 @@ import IconButton from '@/components/shared/IconButton';
 import Image from '@/components/shared/Image';
 import Typography from '@/components/shared/Typography';
 
+import useAuthorizationStore from '@/providers/store/useAuthorizationStore';
+
 const NavigationBar: React.FC = () => {
     const location = useLocation();
     const { isDark, setIsDark } = useColorScheme();
+    const { user, logout } = useAuthorizationStore();
+    const onLogout = () => {
+        logout();
+        localStorage.removeItem('token');
+    };
     return (
         <nav className='fixed top-0 z-50 w-full bg-white py-4 dark:bg-[#161615]'>
             <div className='flex items-center content-between justify-between layout'>
@@ -51,14 +58,16 @@ const NavigationBar: React.FC = () => {
                     >
                         <div className='border rounded-md '>
                             <div className='p-4'>
-                                <Typography variant='h6'>User</Typography>
-                                <Typography variant='b3'>
-                                    Fullstack Developer
+                                <Typography variant='h6'>
+                                    {user?.name}
                                 </Typography>
                             </div>
                             <hr className='w-full border' />
                             <div className='p-4 space-y-2'>
-                                <div className='flex items-center space-x-4 hover:cursor-pointer'>
+                                <div
+                                    className='flex items-center space-x-4 hover:cursor-pointer'
+                                    onClick={() => onLogout()}
+                                >
                                     <Power className='w-4 text-black dark:text-white' />
                                     <Typography variant='b3'>Logout</Typography>
                                 </div>

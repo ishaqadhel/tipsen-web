@@ -7,10 +7,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import Button from '@/components/shared/Button';
 import Card from '@/components/shared/Card';
 import Typography from '@/components/shared/Typography';
+import withAuth from '@/components/shared/withAuth';
 
 import BaseLayout from '@/layouts/Base';
 import CreateAttendanceModal from '@/pages/home/components/shared/CreateAttendanceModal';
 import useHomePageStore from '@/pages/home/providers/store/useHomePageStore';
+import useAuthorizationStore from '@/providers/store/useAuthorizationStore';
 
 type CreateAttendanceRequestType = {
     user_id: string;
@@ -32,6 +34,7 @@ const HomePage: React.FC = () => {
 
     //#region  //*=========== Store ===========
     const { setIsCreateModalOpen } = useHomePageStore();
+    const { user } = useAuthorizationStore();
     //#endregion  //*======== Store ===========
 
     //#region  //*=========== Form ===========
@@ -65,9 +68,7 @@ const HomePage: React.FC = () => {
                     <Card className='w-full'>
                         <div className='flex items-center'>
                             <Users className='w-6 h-6 mr-2 text-black dark:text-white' />
-                            <Typography variant='s1'>
-                                User - Fullstack Developer
-                            </Typography>
+                            <Typography variant='s1'>{user?.name}</Typography>
                         </div>
                     </Card>
                     <Card className='w-full'>
@@ -107,4 +108,4 @@ const HomePage: React.FC = () => {
     );
 };
 
-export default HomePage;
+export default withAuth(HomePage, 'all');
